@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Axioms UI Components</title>
+
+    <script type="module" src="/build/axioms-ui.esm.js"></script>
+    <script nomodule src="/build/axioms-ui.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
+         :root {
+            --app-primary-color: #488aff;
+            --app-font-family: 'Sen', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        }
+        
+        body {
+            font-family: var(--app-font-family);
+        }
+        
+        .btn {
+            background-color: var(--app-primary-color);
+            border: 2px solid var(--app-primary-color);
+            color: white;
+            max-width: 150px;
+            height: 30px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            font-family: var(--app-font-family);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <passwordless-link channel="email" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" style="display: none;" />
+    </div>
+    <div style="display: none;" id="auth-content ">
+        <p id="logged-in ">You are logged in.</p>
+        <p id="logged-in-status "></p>
+        <button class='btn' onclick="logout()">Logout now</button>
+    </div>
+</body>
+
+</html>
+
+<script>
+    var hasAuth = false;
+    var idTokenPayload;
+    (async() => {
+        await customElements.whenDefined('passwordless-link');
+
+        const passwordLinkElement = document.querySelector('passwordless-link');
+        const authContentElement = document.getElementById("auth-content ");
+
+        if (passwordLinkElement) {
+            hasAuth = await passwordLinkElement.isAuthenticated();
+            idTokenPayload = await passwordLinkElement.getIdTokenPayload();
+            if (hasAuth) {
+                passwordLinkElement.style.display = "none ";
+                authContentElement.style.display = "block ";
+                var expires_at = new Date(idTokenPayload.exp * 1000).toLocaleString("en-US")
+                var paragraph = document.getElementById("logged-in-status ");
+                var status = document.createTextNode(`Your username is ${idTokenPayload.preferred_username} and you session expires at ${expires_at}.`);
+                paragraph.appendChild(status)
+            } else {
+                passwordLinkElement.style.display = "block ";
+                authContentElement.style.display = "none ";
+            }
+        }
+    })();
+    const passwordLinkElement = document.querySelector('passwordless-link');
+    passwordLinkElement.addEventListener('authCompleted', event => updateContent(event));
+
+    function updateContent(event) {
+        location.reload()
+    }
+
+    async function logout() {
+        const passwordLinkElement = document.querySelector('passwordless-link');
+        idTokenPayload = await passwordLinkElement.logout();
+    }
+</script>
