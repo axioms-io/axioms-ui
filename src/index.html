@@ -50,7 +50,10 @@
 <script>
     var hasAuth = false;
     var idTokenPayload;
-    (async() => {
+
+    document.addEventListener("DOMContentLoaded", checkAuth);
+
+    async function checkAuth() {
         await customElements.whenDefined('passwordless-link');
 
         const passwordLinkElement = document.querySelector('passwordless-link');
@@ -64,14 +67,15 @@
                 authContentElement.style.display = "block ";
                 var expires_at = new Date(idTokenPayload.exp * 1000).toLocaleString("en-US")
                 var paragraph = document.getElementById("logged-in-status ");
-                var status = document.createTextNode(`Your username is ${idTokenPayload.preferred_username} and you session expires at ${expires_at}.`);
+                var status = document.createTextNode(
+                    `Your username is ${idTokenPayload.preferred_username} and you session expires at ${expires_at}.`);
                 paragraph.appendChild(status)
             } else {
                 passwordLinkElement.style.display = "block ";
                 authContentElement.style.display = "none ";
             }
         }
-    })();
+    }
     const passwordLinkElement = document.querySelector('passwordless-link');
     passwordLinkElement.addEventListener('authCompleted', event => updateContent(event));
 

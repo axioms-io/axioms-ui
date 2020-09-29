@@ -29,6 +29,7 @@ export class PasswordlessLink {
   @State() idTokenPayload: any;
   @State() idTokenValid: boolean = false;
   @State() idTokenExp: any;
+  @State() requestLogout: boolean = false;
 
   @Event() authCompleted: EventEmitter<boolean>;
 
@@ -37,6 +38,33 @@ export class PasswordlessLink {
     this.tokenEndpoint = `https://${this.tenantDomain}/oauth2/token`;
     this.tokenIntrospectEndpoint = `https://${this.tenantDomain}/oauth2/token/introspect`;
     this.tokenVerifyEndpoint = `https://${this.tenantDomain}/oauth2/token/verify`;
+    this.sessionSync()
+  }
+
+  sessionSync() {
+    if (!sessionStorage.length && localStorage.hasOwnProperty('isLoggedIn') && JSON.parse(localStorage.getItem('isLoggedIn'))) {
+      // Ask other tabs for session storage
+      console.log('No session')
+      localStorage.setItem('getSessionStorage', JSON.stringify(Date.now()));
+    };
+    window.addEventListener('storage', function (event) {
+      console.log('Event is ', event.key);
+      if (localStorage.hasOwnProperty('isLoggedIn') && !JSON.parse(localStorage.getItem('isLoggedIn'))) {
+        // sessionStorage is filled -> clear it
+        sessionStorage.clear();
+        window.location.reload();
+      } else if (event.key == 'getSessionStorage') {
+        localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+        localStorage.removeItem('sessionStorage');
+      } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+        // sessionStorage is empty -> fill it
+        var data = JSON.parse(event.newValue), value: any;
+        for (var key in data) {
+          sessionStorage.setItem(key, data[key]);
+        }
+        window.location.reload();
+      }
+    });
   }
 
   async handleSubmit(e) {
@@ -136,6 +164,8 @@ export class PasswordlessLink {
   @Method()
   async logout() {
     await sessionStorage.clear();
+    await localStorage.setItem('isLoggedIn', JSON.stringify(false));
+    await this.sessionSync();
     await this.authCompletedHandler(false);
   }
 
@@ -161,6 +191,9 @@ export class PasswordlessLink {
       if ('valid' in json) {
         this.idTokenValid = json.valid
         this.set_session('is_valid_id_token', json.valid)
+      }
+      if (Math.floor(Date.now() / 1000) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
+        localStorage.setItem('isLoggedIn', JSON.stringify(true));
       }
 
     } catch (err) {
