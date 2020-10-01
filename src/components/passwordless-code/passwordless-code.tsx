@@ -161,8 +161,12 @@ export class PasswordlessCode {
 
   @Method()
   async isAuthenticated() {
+    return await this.isAuthenticatedPrivate()
+  }
+
+  isAuthenticatedPrivate() {
     try {
-      if ((await Math.floor(Date.now() / 1000)) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
+      if ((Math.floor(Date.now() / 1000)) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
         return true;
       } else {
         return false;
@@ -268,7 +272,7 @@ export class PasswordlessCode {
   }
 
   render() {
-    if (this.token) {
+    if (this.token && !this.isAuthenticatedPrivate()) {
       return (
         <Host>
           {this.loading ? (
@@ -296,7 +300,7 @@ export class PasswordlessCode {
           </div>
         </Host>
       );
-    } else {
+    } else if (!this.isAuthenticatedPrivate()) {
       return (
         <Host>
           {this.loading ? (
@@ -341,6 +345,8 @@ export class PasswordlessCode {
           </div>
         </Host>
       );
+    } else {
+    return (<Host></Host>);
     }
   }
 }

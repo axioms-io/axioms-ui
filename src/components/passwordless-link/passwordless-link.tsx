@@ -157,8 +157,12 @@ export class PasswordlessLink {
 
   @Method()
   async isAuthenticated() {
+    return await this.isAuthenticatedPrivate()
+  }
+
+  isAuthenticatedPrivate() {
     try {
-      if (await Math.floor(Date.now() / 1000) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
+      if ((Math.floor(Date.now() / 1000)) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
         return true;
       } else {
         return false;
@@ -253,36 +257,40 @@ export class PasswordlessLink {
   }
 
   render() {
-    return (
-      <Host>
-        {this.loading
-          ? <div class="loader"></div>
-          : <form onSubmit={(e) => this.handleSubmit(e)}>
-            {this.channel === 'sms'
-              ? <slot name='phone-input'>
-                <div>
-                  <label htmlFor="phone">{this.phoneLabel}</label>
-                  <input id="phone" name="phone" type="tel" pattern="[+]{1}[0-9]{11,14}" placeholder={this.phonePlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
-                  <small id="email" class="help-text">{this.phoneHelp}</small>
-                </div>
+    if (!this.isAuthenticatedPrivate()) {
+      return (
+        <Host>
+          {this.loading
+            ? <div class="loader"></div>
+            : <form onSubmit={(e) => this.handleSubmit(e)}>
+              {this.channel === 'sms'
+                ? <slot name='phone-input'>
+                  <div>
+                    <label htmlFor="phone">{this.phoneLabel}</label>
+                    <input id="phone" name="phone" type="tel" pattern="[+]{1}[0-9]{11,14}" placeholder={this.phonePlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                    <small id="email" class="help-text">{this.phoneHelp}</small>
+                  </div>
+                </slot>
+                : <slot name='email-input'>
+                  <div>
+                    <label htmlFor="email">{this.emailLabel}</label>
+                    <input id="email" name="email" type="email" placeholder={this.emailPlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                  </div>
+                </slot>
+              }
+              <slot name='button'>
+                <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
               </slot>
-              : <slot name='email-input'>
-                <div>
-                  <label htmlFor="email">{this.emailLabel}</label>
-                  <input id="email" name="email" type="email" placeholder={this.emailPlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
-                </div>
-              </slot>
-            }
-            <slot name='button'>
-              <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
-            </slot>
-          </form>
-        }
-        <div class="status">
-          <p>{this.statusMsg}</p>
-        </div>
-      </Host>
-    );
+            </form>
+          }
+          <div class="status">
+            <p>{this.statusMsg}</p>
+          </div>
+        </Host>
+      ); 
+    } else {
+      return (<Host></Host>)
+    }
   }
 
 }

@@ -24,67 +24,26 @@
             background-color: var(--app-primary-color);
             border: 2px solid var(--app-primary-color);
             color: white;
-            max-width: 150px;
+            width: 300px;
             height: 30px;
             border-radius: 4px;
             font-size: 15px;
+            margin: 0.5rem auto;
             cursor: pointer;
             font-family: var(--app-font-family);
+            display: block;
         }
     </style>
 </head>
 
 <body>
-    <div>
-        <passwordless-code channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" button-label="Get started now" style="display: none;" />
+    <div style="margin: 2rem;">
+        <button class='btn' onclick="location.href='/pages/passwordless-code/email/'">Login with one-time code via email</button>
+        <button class='btn' onclick="location.href='/pages/passwordless-code/sms/'">Login with one-time code via SMS</button>
+        <button class='btn' onclick="location.href='/pages/passwordless-link/email/'">Login with magic link via email</button>
+        <button class='btn' onclick="location.href='/pages/passwordless-link/sms/'">Login with magic link via SMS</button>
     </div>
-    <div style="display: none;" id="auth-content ">
-        <p id="logged-in ">You are logged in.</p>
-        <p id="logged-in-status "></p>
-        <button class='btn' onclick="logout()">Logout now</button>
-    </div>
+
 </body>
 
 </html>
-
-<script>
-    var hasAuth = false;
-    var idTokenPayload;
-
-    document.addEventListener("DOMContentLoaded", checkAuth);
-
-    async function checkAuth() {
-        await customElements.whenDefined('passwordless-code');
-
-        const passwordLinkElement = document.querySelector('passwordless-code');
-        const authContentElement = document.getElementById("auth-content ");
-
-        if (passwordLinkElement) {
-            hasAuth = await passwordLinkElement.isAuthenticated();
-            idTokenPayload = await passwordLinkElement.getIdTokenPayload();
-            if (hasAuth) {
-                passwordLinkElement.style.display = "none ";
-                authContentElement.style.display = "block ";
-                var expires_at = new Date(idTokenPayload.exp * 1000).toLocaleString("en-US")
-                var paragraph = document.getElementById("logged-in-status ");
-                var status = document.createTextNode(
-                    `Your username is ${idTokenPayload.preferred_username} and you session expires at ${expires_at}.`);
-                paragraph.appendChild(status)
-            } else {
-                passwordLinkElement.style.display = "block ";
-                authContentElement.style.display = "none ";
-            }
-        }
-    }
-    const passwordLinkElement = document.querySelector('passwordless-code');
-    passwordLinkElement.addEventListener('authCompleted', event => updateContent(event));
-
-    function updateContent(event) {
-        location.reload()
-    }
-
-    async function logout() {
-        const passwordLinkElement = document.querySelector('passwordless-code');
-        idTokenPayload = await passwordLinkElement.logout();
-    }
-</script>
