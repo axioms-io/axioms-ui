@@ -36,7 +36,7 @@
 
 <body>
     <div>
-        <passwordless-link channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" button-label="Get started now" style="display: none;" />
+        <passwordless-code channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" button-label="Get started now" style="display: none;" />
     </div>
     <div style="display: none;" id="auth-content ">
         <p id="logged-in ">You are logged in.</p>
@@ -54,9 +54,9 @@
     document.addEventListener("DOMContentLoaded", checkAuth);
 
     async function checkAuth() {
-        await customElements.whenDefined('passwordless-link');
+        await customElements.whenDefined('passwordless-code');
 
-        const passwordLinkElement = document.querySelector('passwordless-link');
+        const passwordLinkElement = document.querySelector('passwordless-code');
         const authContentElement = document.getElementById("auth-content ");
 
         if (passwordLinkElement) {
@@ -76,7 +76,7 @@
             }
         }
     }
-    const passwordLinkElement = document.querySelector('passwordless-link');
+    const passwordLinkElement = document.querySelector('passwordless-code');
     passwordLinkElement.addEventListener('authCompleted', event => updateContent(event));
 
     function updateContent(event) {
@@ -84,7 +84,7 @@
     }
 
     async function logout() {
-        const passwordLinkElement = document.querySelector('passwordless-link');
+        const passwordLinkElement = document.querySelector('passwordless-code');
         idTokenPayload = await passwordLinkElement.logout();
     }
 </script>

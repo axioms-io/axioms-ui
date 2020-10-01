@@ -6,6 +6,24 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface PasswordlessCode {
+        "channel": string;
+        "clientId": string;
+        "emailLabel": string;
+        "emailPlaceholder": string;
+        "getIdTokenPayload": () => Promise<any>;
+        "isAuthenticated": () => Promise<boolean>;
+        "isPopup": boolean;
+        "logout": () => Promise<void>;
+        "otpCodeButtonLabel": string;
+        "otpCodeLabel": string;
+        "otpCodePlaceholder": string;
+        "otpLength": number;
+        "phoneLabel": string;
+        "phonePlaceholder": string;
+        "startButtonLabel": string;
+        "tenantDomain": string;
+    }
     interface PasswordlessLink {
         "buttonLabel": string;
         "channel": string;
@@ -22,6 +40,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLPasswordlessCodeElement extends Components.PasswordlessCode, HTMLStencilElement {
+    }
+    var HTMLPasswordlessCodeElement: {
+        prototype: HTMLPasswordlessCodeElement;
+        new (): HTMLPasswordlessCodeElement;
+    };
     interface HTMLPasswordlessLinkElement extends Components.PasswordlessLink, HTMLStencilElement {
     }
     var HTMLPasswordlessLinkElement: {
@@ -29,10 +53,27 @@ declare global {
         new (): HTMLPasswordlessLinkElement;
     };
     interface HTMLElementTagNameMap {
+        "passwordless-code": HTMLPasswordlessCodeElement;
         "passwordless-link": HTMLPasswordlessLinkElement;
     }
 }
 declare namespace LocalJSX {
+    interface PasswordlessCode {
+        "channel"?: string;
+        "clientId": string;
+        "emailLabel"?: string;
+        "emailPlaceholder"?: string;
+        "isPopup"?: boolean;
+        "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
+        "otpCodeButtonLabel"?: string;
+        "otpCodeLabel"?: string;
+        "otpCodePlaceholder"?: string;
+        "otpLength"?: number;
+        "phoneLabel"?: string;
+        "phonePlaceholder"?: string;
+        "startButtonLabel"?: string;
+        "tenantDomain": string;
+    }
     interface PasswordlessLink {
         "buttonLabel"?: string;
         "channel"?: string;
@@ -46,6 +87,7 @@ declare namespace LocalJSX {
         "tenantDomain": string;
     }
     interface IntrinsicElements {
+        "passwordless-code": PasswordlessCode;
         "passwordless-link": PasswordlessLink;
     }
 }
@@ -53,6 +95,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "passwordless-code": LocalJSX.PasswordlessCode & JSXBase.HTMLAttributes<HTMLPasswordlessCodeElement>;
             "passwordless-link": LocalJSX.PasswordlessLink & JSXBase.HTMLAttributes<HTMLPasswordlessLinkElement>;
         }
     }

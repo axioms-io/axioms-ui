@@ -76,7 +76,15 @@ The first step for all three of these strategies is to [publish to NPM](https://
 
 
 ## Add new component
+First check `npm` version, you need anything 12+,
 
 ```
-stencil generate my-component
+npm -v
+nvm list
+nvm install 12.18.4
+nvm alias default v12.18.4
+```
+
+```
+npm run generate passwordless-code
 ```

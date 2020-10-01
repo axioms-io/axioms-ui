@@ -23,7 +23,8 @@
     },
     "dependencies": {
         "@stencil/core": "^2.0.1",
-        "google-libphonenumber": "^3.2.13"
+        "google-libphonenumber": "^3.2.13",
+        "latest": "^0.2.0"
     },
     "license": "MIT",
     "devDependencies": {

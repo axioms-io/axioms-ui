@@ -18,7 +18,7 @@ export class PasswordlessLink {
   @Prop() phoneLabel: string = '';
   @Prop() phonePlaceholder: string = "Your mobile number"
 
-  @State() token: string;
+  @State() token: string | null = null;
   @State() startEndpoint: string;
   @State() tokenEndpoint: string;
   @State() tokenVerifyEndpoint: string;
