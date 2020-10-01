@@ -1,5 +1,6 @@
-import { Component, Prop, State, h, Host, Event, EventEmitter, Method } from '@stencil/core';
-
+import { Component, Prop, State, h, Host, Event, EventEmitter, Method, Watch } from '@stencil/core';
+import { PhoneNumberUtil } from 'google-libphonenumber';
+import { validateEmail } from '../../common/validate';
 @Component({
   tag: 'passwordless-link',
   styleUrl: 'passwordless-link.css',
@@ -12,24 +13,31 @@ export class PasswordlessLink {
   @Prop() channel: string = 'email';
   @Prop() isPopup: boolean = false;
   @Prop() buttonLabel: string = 'Log In';
+  @Prop() emailLabel: string = '';
+  @Prop() emailPlaceholder: string = "Your email address"
+  @Prop() phoneLabel: string = '';
+  @Prop() phonePlaceholder: string = "Your mobile number"
 
   @State() token: string;
   @State() startEndpoint: string;
   @State() tokenEndpoint: string;
   @State() tokenVerifyEndpoint: string;
   @State() tokenIntrospectEndpoint: string;
-  @State() value: string;
+  @State() value: any;
   @State() timer: string;
   @State() accessToken: string;
   @State() idToken: string;
   @State() refreshToken: string;
   @State() loading: boolean = false;
   @State() pollingInterval = 15;
+  @State() pollingAttempts = 0;
   @State() statusMsg: string = '';
   @State() idTokenPayload: any;
   @State() idTokenValid: boolean = false;
   @State() idTokenExp: any;
   @State() requestLogout: boolean = false;
+  @State() isFormValid: boolean = false;
+  @State() phoneHelp: string = '';
 
   @Event() authCompleted: EventEmitter<boolean>;
 
@@ -74,9 +82,10 @@ export class PasswordlessLink {
       'method': 'link',
       'channel': this.channel
     }
-    this.channel === 'phone' ? data['phone'] = this.value : data['email'] = this.value;
+    this.channel === 'sms' ? data['phone'] = this.value : data['email'] = this.value;
     try {
       this.loading = true;
+      this.statusMsg = '';
       let response = await fetch(this.startEndpoint, {
         method: 'POST',
         body: JSON.stringify(data),
@@ -84,6 +93,7 @@ export class PasswordlessLink {
           'Content-Type': 'application/json'
         }
       });
+      if (!response.ok) throw await response.json();
       let json = await response.json();
       this.token = json.token;
       this.statusMsg = json.msg;
@@ -92,6 +102,9 @@ export class PasswordlessLink {
       await this.handleTokenRequest()
     } catch (err) {
       console.log(err);
+      if (err.hasOwnProperty('non_field_errors') || err.phone || err.email) {
+        this.statusMsg = err.non_field_errors[0]
+      }
       this.loading = false;
     }
   }
@@ -102,7 +115,7 @@ export class PasswordlessLink {
       'client_id': this.clientId,
       'token': this.token
     }
-    this.channel === 'phone' ? data['phone'] = this.value : data['email'] = this.value;
+    this.channel === 'sms' ? data['phone'] = this.value : data['email'] = this.value;
     try {
       this.loading = true;
       const searchParams = Object.keys(data).map((key) => {
@@ -133,6 +146,7 @@ export class PasswordlessLink {
           await new Promise(resolve => setTimeout(resolve, this.pollingInterval * 1000));
           await this.handleTokenRequest()
           break;
+        // Add case for timeout or resend
         default:
           this.statusMsg = err.error_description;
           this.loading = false;
@@ -152,6 +166,23 @@ export class PasswordlessLink {
     } catch (error) {
       console.error(error);
       return false;
+    }
+  }
+
+  @Watch('value')
+  checkInput() {
+    if (this.channel == 'email') {
+      this.isFormValid = validateEmail(this.value)
+    }
+    if (this.channel == 'sms') {
+      var phoneUtil = PhoneNumberUtil.getInstance();
+      try {
+        this.isFormValid = phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(this.value));
+      } catch (e) {
+        this.isFormValid = false;
+      }
+      console.log(this.isFormValid);
+      this.isFormValid ? this.phoneHelp = '' : this.phoneHelp = 'Mobile number in international format - a plus sign (+) followed by the country code and local mobile number.';
     }
   }
 
@@ -227,16 +258,23 @@ export class PasswordlessLink {
         {this.loading
           ? <div class="loader"></div>
           : <form onSubmit={(e) => this.handleSubmit(e)}>
-            {this.channel === 'phone'
+            {this.channel === 'sms'
               ? <slot name='phone-input'>
-                <div><input id="phone" name="phone" type="text" placeholder="Your Phone Number" value={this.value} onInput={(e) => this.handleChange(e)}></input></div>
+                <div>
+                  <label htmlFor="phone">{this.phoneLabel}</label>
+                  <input id="phone" name="phone" type="tel" pattern="[+]{1}[0-9]{11,14}" placeholder={this.phonePlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                  <small id="email" class="help-text">{this.phoneHelp}</small>
+                </div>
               </slot>
               : <slot name='email-input'>
-                <div><input id="email" name="email" type="email" placeholder="Your Email Address" value={this.value} onInput={(e) => this.handleChange(e)}></input></div>
+                <div>
+                  <label htmlFor="email">{this.emailLabel}</label>
+                  <input id="email" name="email" type="email" placeholder={this.emailPlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                </div>
               </slot>
             }
             <slot name='button'>
-              <button type="submit" class="button button-primary" value="Submit" disabled={this.loading}>{this.buttonLabel}</button>
+              <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
             </slot>
           </form>
         }

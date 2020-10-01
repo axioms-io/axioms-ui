@@ -12,7 +12,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
          :root {
-            --app-primary-color: #488aff;
+            --app-primary-color: #ff5136;
             --app-font-family: 'Sen', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
         }
         
@@ -36,7 +36,7 @@
 
 <body>
     <div>
-        <passwordless-link channel="email" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" style="display: none;" />
+        <passwordless-link channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" button-label="Get started now" style="display: none;" />
     </div>
     <div style="display: none;" id="auth-content ">
         <p id="logged-in ">You are logged in.</p>

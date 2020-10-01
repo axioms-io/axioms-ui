@@ -10,10 +10,14 @@ export namespace Components {
         "buttonLabel": string;
         "channel": string;
         "clientId": string;
+        "emailLabel": string;
+        "emailPlaceholder": string;
         "getIdTokenPayload": () => Promise<any>;
         "isAuthenticated": () => Promise<boolean>;
         "isPopup": boolean;
         "logout": () => Promise<void>;
+        "phoneLabel": string;
+        "phonePlaceholder": string;
         "tenantDomain": string;
     }
 }
@@ -33,8 +37,12 @@ declare namespace LocalJSX {
         "buttonLabel"?: string;
         "channel"?: string;
         "clientId": string;
+        "emailLabel"?: string;
+        "emailPlaceholder"?: string;
         "isPopup"?: boolean;
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
+        "phoneLabel"?: string;
+        "phonePlaceholder"?: string;
         "tenantDomain": string;
     }
     interface IntrinsicElements {
