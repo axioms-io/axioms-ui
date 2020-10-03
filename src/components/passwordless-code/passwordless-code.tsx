@@ -20,6 +20,8 @@ export class PasswordlessCode {
   @Prop() otpCodeLabel: string = '';
   @Prop() otpCodePlaceholder: string = 'Enter verification code';
   @Prop() otpLength: number = 8;
+  @Prop() btnCssClass: string = 'btn-md btn-success';
+  @Prop() inputCssClass: string = 'form-control-md';
 
   @State() token: string | null = null;
   @State() startEndpoint: string;
@@ -161,12 +163,12 @@ export class PasswordlessCode {
 
   @Method()
   async isAuthenticated() {
-    return await this.isAuthenticatedPrivate()
+    return await this.isAuthenticatedPrivate();
   }
 
   isAuthenticatedPrivate() {
     try {
-      if ((Math.floor(Date.now() / 1000)) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
+      if (Math.floor(Date.now() / 1000) < this.get_session('id_exp', true) && this.get_session('is_valid_id_token', true) == true) {
         return true;
       } else {
         return false;
@@ -197,11 +199,11 @@ export class PasswordlessCode {
   @Watch('otpCode')
   checkOtpCode() {
     if (this.otpCode) {
-      this.isOtpFormValid = isNumeric(this.otpCode) && (this.otpCode.toString().length === this.otpLength);
+      this.isOtpFormValid = isNumeric(this.otpCode) && this.otpCode.toString().length === this.otpLength;
     } else {
       this.isOtpFormValid = false;
     }
-    this.isOtpFormValid ? (this.otpCodeHelp = '') : (this.otpCodeHelp = `One-time verification code is ${this.otpLength} digits long.`);
+    this.isOtpFormValid ? (this.otpCodeHelp = '') : (this.otpCodeHelp = `One-time verification code is ${this.otpLength} digits long number.`);
   }
 
   @Method()
@@ -282,14 +284,25 @@ export class PasswordlessCode {
               <slot name="code-input">
                 <div>
                   <label htmlFor="code">{this.emailLabel}</label>
-                  <input id="code" name="code" type="number" placeholder={this.otpCodePlaceholder} value={this.otpCode} onInput={e => this.handleCodeChange(e)}></input>
+                  <input
+                    id="code"
+                    name="code"
+                    type="text"
+                    class={this.inputCssClass}
+                    placeholder={this.otpCodePlaceholder}
+                    value={this.otpCode}
+                    onInput={e => this.handleCodeChange(e)}
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autocomplete="one-time-code"
+                  ></input>
                   <small id="email" class="help-text">
                     {this.otpCodeHelp}
                   </small>
                 </div>
               </slot>
               <slot name="button">
-                <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isOtpFormValid}>
+                <button type="submit" class={this.btnCssClass} value="Submit" disabled={this.loading || !this.isOtpFormValid}>
                   {this.otpCodeButtonLabel}
                 </button>
               </slot>
@@ -315,6 +328,7 @@ export class PasswordlessCode {
                       id="phone"
                       name="phone"
                       type="tel"
+                      class={this.inputCssClass}
                       pattern="[+]{1}[0-9]{11,14}"
                       placeholder={this.phonePlaceholder}
                       value={this.value}
@@ -329,12 +343,20 @@ export class PasswordlessCode {
                 <slot name="email-input">
                   <div>
                     <label htmlFor="email">{this.emailLabel}</label>
-                    <input id="email" name="email" type="email" placeholder={this.emailPlaceholder} value={this.value} onInput={e => this.handleChange(e)}></input>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      class={this.inputCssClass}
+                      placeholder={this.emailPlaceholder}
+                      value={this.value}
+                      onInput={e => this.handleChange(e)}
+                    ></input>
                   </div>
                 </slot>
               )}
               <slot name="button">
-                <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isFormValid}>
+                <button type="submit" class={this.btnCssClass} value="Submit" disabled={this.loading || !this.isFormValid}>
                   {this.startButtonLabel}
                 </button>
               </slot>
@@ -346,7 +368,7 @@ export class PasswordlessCode {
         </Host>
       );
     } else {
-    return (<Host></Host>);
+      return <Host></Host>;
     }
   }
 }

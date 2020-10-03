@@ -1,0 +1,4 @@
+# Ignore dirs
+src/
+www/
+node_modules/

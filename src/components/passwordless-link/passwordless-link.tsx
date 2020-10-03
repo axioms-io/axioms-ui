@@ -17,6 +17,8 @@ export class PasswordlessLink {
   @Prop() emailPlaceholder: string = "Your email address"
   @Prop() phoneLabel: string = '';
   @Prop() phonePlaceholder: string = "Your mobile number"
+  @Prop() btnCssClass: string = 'btn-md btn-success';
+  @Prop() inputCssClass: string = 'form-control-md';
 
   @State() token: string | null = null;
   @State() startEndpoint: string;
@@ -267,19 +269,19 @@ export class PasswordlessLink {
                 ? <slot name='phone-input'>
                   <div>
                     <label htmlFor="phone">{this.phoneLabel}</label>
-                    <input id="phone" name="phone" type="tel" pattern="[+]{1}[0-9]{11,14}" placeholder={this.phonePlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                    <input id="phone" name="phone" type="tel" class={this.inputCssClass} pattern="[+]{1}[0-9]{11,14}" placeholder={this.phonePlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
                     <small id="email" class="help-text">{this.phoneHelp}</small>
                   </div>
                 </slot>
                 : <slot name='email-input'>
                   <div>
                     <label htmlFor="email">{this.emailLabel}</label>
-                    <input id="email" name="email" type="email" placeholder={this.emailPlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
+                    <input id="email" name="email" type="email" class={this.inputCssClass} placeholder={this.emailPlaceholder} value={this.value} onInput={(e) => this.handleChange(e)}></input>
                   </div>
                 </slot>
               }
               <slot name='button'>
-                <button type="submit" class="button button-outline" value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
+                <button type="submit" class={this.btnCssClass} value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
               </slot>
             </form>
           }

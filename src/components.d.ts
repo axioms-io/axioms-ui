@@ -7,11 +7,13 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface PasswordlessCode {
+        "btnCssClass": string;
         "channel": string;
         "clientId": string;
         "emailLabel": string;
         "emailPlaceholder": string;
         "getIdTokenPayload": () => Promise<any>;
+        "inputCssClass": string;
         "isAuthenticated": () => Promise<boolean>;
         "isPopup": boolean;
         "logout": () => Promise<void>;
@@ -25,12 +27,14 @@ export namespace Components {
         "tenantDomain": string;
     }
     interface PasswordlessLink {
+        "btnCssClass": string;
         "buttonLabel": string;
         "channel": string;
         "clientId": string;
         "emailLabel": string;
         "emailPlaceholder": string;
         "getIdTokenPayload": () => Promise<any>;
+        "inputCssClass": string;
         "isAuthenticated": () => Promise<boolean>;
         "isPopup": boolean;
         "logout": () => Promise<void>;
@@ -59,10 +63,12 @@ declare global {
 }
 declare namespace LocalJSX {
     interface PasswordlessCode {
+        "btnCssClass"?: string;
         "channel"?: string;
         "clientId": string;
         "emailLabel"?: string;
         "emailPlaceholder"?: string;
+        "inputCssClass"?: string;
         "isPopup"?: boolean;
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
         "otpCodeButtonLabel"?: string;
@@ -75,11 +81,13 @@ declare namespace LocalJSX {
         "tenantDomain": string;
     }
     interface PasswordlessLink {
+        "btnCssClass"?: string;
         "buttonLabel"?: string;
         "channel"?: string;
         "clientId": string;
         "emailLabel"?: string;
         "emailPlaceholder"?: string;
+        "inputCssClass"?: string;
         "isPopup"?: boolean;
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
         "phoneLabel"?: string;
