@@ -1,5 +1,12 @@
 # Axioms UI ![NPM](https://img.shields.io/npm/v/@axioms/axioms-ui?style=flat-square)
-Ready to use Axioms custom elements to quickly add authentication in your static web sites and single page apps.
+Use Axioms web components to quickly add authentication in your static web sites and single page applications (SPA). To use these web components you will need an [Axioms](https://axioms.io) account and tenant. If you don't have an Axioms account you can [create one for free](https://axioms.io).
+
+Currently we support following web components,
+
+- `passwordless-code`: [Passwordless using Link](https://github.com/axioms-io/axioms-ui/tree/master/src/components/passwordless-link) authenticates users using one-time code sent via SMS/Email
+- `passwordless-link`: [Passwordless using Link](https://github.com/axioms-io/axioms-ui/tree/master/src/components/passwordless-link) authenticates users using magic link sent via SMS/Email
+
+To send code or link via SMS, you will need to setup your SMS provider. Currently we support Twilio, and Amazon SNS.
 
 
 # Install
@@ -24,6 +31,10 @@ An example of how to use the web component with html,
 
 ```html
 <passwordless-code channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" start-button-label="Get started now"  />
+```
+
+```html
+<passwordless-link channel="email" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" start-button-label="Get started now"  />
 ```
 
 Additionally you can hide or show content based on authentication.
