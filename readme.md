@@ -93,5 +93,5 @@ Set value for css variables to style web components according to your requiremen
 # Component Documentation
 List of available props, events, and methods for each component.
 
-- [Passwordless using Link](../src/../axioms-ui/src/components/passwordless-link/readme.md)
-- [Passwordless using Code](../src/../axioms-ui/src/components/passwordless-code/readme.md)
+- [Passwordless using Link](https://github.com/axioms-io/axioms-ui/tree/master/src/components/passwordless-link)
+- [Passwordless using Code](https://github.com/axioms-io/axioms-ui/tree/master/src/components/passwordless-code)
