@@ -7,20 +7,68 @@ import { validateEmail, isNumeric } from '../../common/validate';
   shadow: true,
 })
 export class PasswordlessCode {
+  /**
+   * Axioms tenant domain i.e. auth.example.com
+   */
   @Prop() tenantDomain!: string;
+  /**
+   * Axioms client id
+   */
   @Prop() clientId!: string;
+  /**
+   * Channel to deliver link 'email' or 'sms'
+   */
   @Prop() channel: string = 'email';
+  /**
+   * Is custom element used in a pop-up?
+   */
   @Prop() isPopup: boolean = false;
+  /**
+   * Start button label
+   */
   @Prop() startButtonLabel: string = 'Log In';
+  /**
+   * Button label for one-time code verification
+   */
   @Prop() otpCodeButtonLabel: string = 'Verify and login';
+  /**
+   * Email field label
+   */
   @Prop() emailLabel: string = '';
+  /**
+   * Email field placeholder
+   */
   @Prop() emailPlaceholder: string = 'Your email address';
+  /**
+   * Phone field label 
+   */
   @Prop() phoneLabel: string = '';
+  /**
+   * Phone field placeholder
+   */
   @Prop() phonePlaceholder: string = 'Your mobile number';
+  /**
+   * One-time code field label 
+   */
   @Prop() otpCodeLabel: string = '';
+  /**
+   * One-time code field placeholder
+   */
   @Prop() otpCodePlaceholder: string = 'Enter verification code';
-  @Prop() otpLength: number = 8;
+  /**
+   * One-time code length. Expected values 6 or 8 depending on tenant settings.
+   */
+  @Prop() otpLength: number = 6;
+  /**
+   * Button css class. List of available classes:
+   * Size: `btn-sm`, `btn-md`, `btn-lg`. 
+   * Color: `btn-primary`, `btn-secondary`, `btn-success`, `btn-info`, `btn-outline-primary`, etc.
+   */
   @Prop() btnCssClass: string = 'btn-md btn-success';
+  /**
+   * Input css classes. List of available classes:
+   * Size: `form-control-sm`, `form-control-md`, `form-control-lg`
+   */
   @Prop() inputCssClass: string = 'form-control-md';
 
   @State() token: string | null = null;
@@ -47,6 +95,9 @@ export class PasswordlessCode {
   @State() phoneHelp: string = '';
   @State() otpCodeHelp: string = '';
 
+  /**
+   * Emits an event when authentication completed
+   */
   @Event() authCompleted: EventEmitter<boolean>;
 
   componentWillLoad() {
@@ -161,6 +212,9 @@ export class PasswordlessCode {
     }
   }
 
+  /**
+   * Check if user is authenticated or not
+   */
   @Method()
   async isAuthenticated() {
     return await this.isAuthenticatedPrivate();
@@ -177,6 +231,44 @@ export class PasswordlessCode {
       console.error(error);
       return false;
     }
+  }
+
+  /**
+   * Get id token payload
+   */
+  @Method()
+  async getIdTokenPayload() {
+    let payload = await this.get_session('id_payload', true);
+    return payload;
+  }
+
+  /**
+   * Get id token 
+   */
+  @Method()
+  async getIdToken() {
+    let token = await this.get_session('id_token')
+    return token
+  }
+
+  /**
+   * Get access token 
+   */
+  @Method()
+  async getAccessToken() {
+    let token = await this.get_session('access_token')
+    return token
+  }
+
+  /**
+   * Logout user by clearing session
+   */
+  @Method()
+  async logout() {
+    await sessionStorage.clear();
+    await localStorage.setItem('isLoggedIn', JSON.stringify(false));
+    await this.sessionSync();
+    await this.authCompletedHandler(false);
   }
 
   @Watch('value')
@@ -204,20 +296,6 @@ export class PasswordlessCode {
       this.isOtpFormValid = false;
     }
     this.isOtpFormValid ? (this.otpCodeHelp = '') : (this.otpCodeHelp = `One-time verification code is ${this.otpLength} digits long number.`);
-  }
-
-  @Method()
-  async getIdTokenPayload() {
-    let payload = await this.get_session('id_payload', true);
-    return payload;
-  }
-
-  @Method()
-  async logout() {
-    await sessionStorage.clear();
-    await localStorage.setItem('isLoggedIn', JSON.stringify(false));
-    await this.sessionSync();
-    await this.authCompletedHandler(false);
   }
 
   async validateIdToken() {

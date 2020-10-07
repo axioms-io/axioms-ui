@@ -7,39 +7,151 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface PasswordlessCode {
+        /**
+          * Button css class. List of available classes: Size: `btn-sm`, `btn-md`, `btn-lg`.  Color: `btn-primary`, `btn-secondary`, `btn-success`, `btn-info`, `btn-outline-primary`, etc.
+         */
         "btnCssClass": string;
+        /**
+          * Channel to deliver link 'email' or 'sms'
+         */
         "channel": string;
+        /**
+          * Axioms client id
+         */
         "clientId": string;
+        /**
+          * Email field label
+         */
         "emailLabel": string;
+        /**
+          * Email field placeholder
+         */
         "emailPlaceholder": string;
+        /**
+          * Get access token
+         */
+        "getAccessToken": () => Promise<any>;
+        /**
+          * Get id token
+         */
+        "getIdToken": () => Promise<any>;
+        /**
+          * Get id token payload
+         */
         "getIdTokenPayload": () => Promise<any>;
+        /**
+          * Input css classes. List of available classes: Size: `form-control-sm`, `form-control-md`, `form-control-lg`
+         */
         "inputCssClass": string;
+        /**
+          * Check if user is authenticated or not
+         */
         "isAuthenticated": () => Promise<boolean>;
+        /**
+          * Is custom element used in a pop-up?
+         */
         "isPopup": boolean;
+        /**
+          * Logout user by clearing session
+         */
         "logout": () => Promise<void>;
+        /**
+          * Button label for one-time code verification
+         */
         "otpCodeButtonLabel": string;
+        /**
+          * One-time code field label
+         */
         "otpCodeLabel": string;
+        /**
+          * One-time code field placeholder
+         */
         "otpCodePlaceholder": string;
+        /**
+          * One-time code length. Expected values 6 or 8 depending on tenant settings.
+         */
         "otpLength": number;
+        /**
+          * Phone field label
+         */
         "phoneLabel": string;
+        /**
+          * Phone field placeholder
+         */
         "phonePlaceholder": string;
+        /**
+          * Start button label
+         */
         "startButtonLabel": string;
+        /**
+          * Axioms tenant domain i.e. auth.example.com
+         */
         "tenantDomain": string;
     }
     interface PasswordlessLink {
+        /**
+          * Button css class. List of available classes: Size: `btn-sm`, `btn-md`, `btn-lg`.  Color: `btn-primary`, `btn-secondary`, `btn-success`, `btn-info`, `btn-outline-primary`, etc.
+         */
         "btnCssClass": string;
+        /**
+          * Channel to deliver link 'email' or 'sms'
+         */
         "channel": string;
+        /**
+          * Axioms client id
+         */
         "clientId": string;
+        /**
+          * Email field label
+         */
         "emailLabel": string;
+        /**
+          * Email field placeholder
+         */
         "emailPlaceholder": string;
+        /**
+          * Get access token
+         */
+        "getAccessToken": () => Promise<any>;
+        /**
+          * Get id token
+         */
+        "getIdToken": () => Promise<any>;
+        /**
+          * Get id token payload
+         */
         "getIdTokenPayload": () => Promise<any>;
+        /**
+          * Input css classes. List of available classes: Size: `form-control-sm`, `form-control-md`, `form-control-lg`
+         */
         "inputCssClass": string;
+        /**
+          * Check if user is authenticated or not
+         */
         "isAuthenticated": () => Promise<boolean>;
+        /**
+          * Is custom element used in a pop-up?
+         */
         "isPopup": boolean;
+        /**
+          * Logout user by clearing session
+         */
         "logout": () => Promise<void>;
+        /**
+          * Phone field label
+         */
         "phoneLabel": string;
+        /**
+          * Phone field placeholder
+         */
         "phonePlaceholder": string;
+        /**
+          * Start button label
+         */
         "startButtonLabel": string;
+        /**
+          * Axioms tenant domain i.e. auth.example.com
+         */
         "tenantDomain": string;
     }
 }
@@ -63,35 +175,119 @@ declare global {
 }
 declare namespace LocalJSX {
     interface PasswordlessCode {
+        /**
+          * Button css class. List of available classes: Size: `btn-sm`, `btn-md`, `btn-lg`.  Color: `btn-primary`, `btn-secondary`, `btn-success`, `btn-info`, `btn-outline-primary`, etc.
+         */
         "btnCssClass"?: string;
+        /**
+          * Channel to deliver link 'email' or 'sms'
+         */
         "channel"?: string;
+        /**
+          * Axioms client id
+         */
         "clientId": string;
+        /**
+          * Email field label
+         */
         "emailLabel"?: string;
+        /**
+          * Email field placeholder
+         */
         "emailPlaceholder"?: string;
+        /**
+          * Input css classes. List of available classes: Size: `form-control-sm`, `form-control-md`, `form-control-lg`
+         */
         "inputCssClass"?: string;
+        /**
+          * Is custom element used in a pop-up?
+         */
         "isPopup"?: boolean;
+        /**
+          * Emits an event when authentication completed
+         */
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
+        /**
+          * Button label for one-time code verification
+         */
         "otpCodeButtonLabel"?: string;
+        /**
+          * One-time code field label
+         */
         "otpCodeLabel"?: string;
+        /**
+          * One-time code field placeholder
+         */
         "otpCodePlaceholder"?: string;
+        /**
+          * One-time code length. Expected values 6 or 8 depending on tenant settings.
+         */
         "otpLength"?: number;
+        /**
+          * Phone field label
+         */
         "phoneLabel"?: string;
+        /**
+          * Phone field placeholder
+         */
         "phonePlaceholder"?: string;
+        /**
+          * Start button label
+         */
         "startButtonLabel"?: string;
+        /**
+          * Axioms tenant domain i.e. auth.example.com
+         */
         "tenantDomain": string;
     }
     interface PasswordlessLink {
+        /**
+          * Button css class. List of available classes: Size: `btn-sm`, `btn-md`, `btn-lg`.  Color: `btn-primary`, `btn-secondary`, `btn-success`, `btn-info`, `btn-outline-primary`, etc.
+         */
         "btnCssClass"?: string;
+        /**
+          * Channel to deliver link 'email' or 'sms'
+         */
         "channel"?: string;
+        /**
+          * Axioms client id
+         */
         "clientId": string;
+        /**
+          * Email field label
+         */
         "emailLabel"?: string;
+        /**
+          * Email field placeholder
+         */
         "emailPlaceholder"?: string;
+        /**
+          * Input css classes. List of available classes: Size: `form-control-sm`, `form-control-md`, `form-control-lg`
+         */
         "inputCssClass"?: string;
+        /**
+          * Is custom element used in a pop-up?
+         */
         "isPopup"?: boolean;
+        /**
+          * Emits an event when authentication completed
+         */
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
+        /**
+          * Phone field label
+         */
         "phoneLabel"?: string;
+        /**
+          * Phone field placeholder
+         */
         "phonePlaceholder"?: string;
+        /**
+          * Start button label
+         */
         "startButtonLabel"?: string;
+        /**
+          * Axioms tenant domain i.e. auth.example.com
+         */
         "tenantDomain": string;
     }
     interface IntrinsicElements {
