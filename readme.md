@@ -8,8 +8,8 @@ Ready to use Axioms custom elements to quickly add authentication in your static
 Add following script tags in HTML header,
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.2/dist/axioms-ui/axioms-ui.esm.js"></script>
-<script nomodule src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.2/dist/axioms-ui/axioms-ui.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.3/dist/axioms-ui/axioms-ui.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.3/dist/axioms-ui/axioms-ui.js"></script>
 ```
 
 ## As NPM Package

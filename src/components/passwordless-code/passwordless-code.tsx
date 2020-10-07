@@ -193,9 +193,13 @@ export class PasswordlessCode {
       });
       if (!response.ok) throw await response.json();
       let json = await response.json();
+      console.log(json)
       'access_token' in json ? (this.accessToken = json.access_token) : '';
       'id_token' in json ? (this.idToken = json.id_token) : '';
       'refresh_token' in json ? (this.refreshToken = json.refresh_token) : '';
+      this.set_session('id_token', 'id_token' in json ? json.id_token : '');
+      this.set_session('access_token', 'access_token' in json ? json.access_token : '');
+      this.set_session('refresh_token', 'refresh_token' in json ? json.refresh_token : '');
       await this.validateIdToken();
       await this.authCompletedHandler(true);
       this.statusMsg = '';
@@ -216,7 +220,7 @@ export class PasswordlessCode {
    * Check if user is authenticated or not
    */
   @Method()
-  async isAuthenticated() {
+  async isAuthenticated():Promise<boolean> {
     return await this.isAuthenticatedPrivate();
   }
 
@@ -237,7 +241,7 @@ export class PasswordlessCode {
    * Get id token payload
    */
   @Method()
-  async getIdTokenPayload() {
+  async getIdTokenPayload(){
     let payload = await this.get_session('id_payload', true);
     return payload;
   }
@@ -246,7 +250,7 @@ export class PasswordlessCode {
    * Get id token 
    */
   @Method()
-  async getIdToken() {
+  async getIdToken():Promise<string|null> {
     let token = await this.get_session('id_token')
     return token
   }
@@ -255,7 +259,7 @@ export class PasswordlessCode {
    * Get access token 
    */
   @Method()
-  async getAccessToken() {
+  async getAccessToken():Promise<string|null> {
     let token = await this.get_session('access_token')
     return token
   }
@@ -446,7 +450,7 @@ export class PasswordlessCode {
         </Host>
       );
     } else {
-      return <Host></Host>;
+    return <Host></Host>;
     }
   }
 }

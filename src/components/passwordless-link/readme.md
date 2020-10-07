@@ -31,23 +31,23 @@
 
 ## Methods
 
-### `getAccessToken() => Promise<any>`
+### `getAccessToken() => Promise<string | null>`
 
 Get access token
 
 #### Returns
 
-Type: `Promise<any>`
+Type: `Promise<string>`
 
 
 
-### `getIdToken() => Promise<any>`
+### `getIdToken() => Promise<string | null>`
 
 Get id token
 
 #### Returns
 
-Type: `Promise<any>`
+Type: `Promise<string>`
 
 
 

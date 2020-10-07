@@ -30,11 +30,11 @@ export namespace Components {
         /**
           * Get access token
          */
-        "getAccessToken": () => Promise<any>;
+        "getAccessToken": () => Promise<string | null>;
         /**
           * Get id token
          */
-        "getIdToken": () => Promise<any>;
+        "getIdToken": () => Promise<string | null>;
         /**
           * Get id token payload
          */
@@ -112,11 +112,11 @@ export namespace Components {
         /**
           * Get access token
          */
-        "getAccessToken": () => Promise<any>;
+        "getAccessToken": () => Promise<string | null>;
         /**
           * Get id token
          */
-        "getIdToken": () => Promise<any>;
+        "getIdToken": () => Promise<string | null>;
         /**
           * Get id token payload
          */
