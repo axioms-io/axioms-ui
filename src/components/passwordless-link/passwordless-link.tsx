@@ -12,7 +12,7 @@ export class PasswordlessLink {
   @Prop() clientId!: string;
   @Prop() channel: string = 'email';
   @Prop() isPopup: boolean = false;
-  @Prop() buttonLabel: string = 'Log In';
+  @Prop() startButtonLabel: string = 'Log In';
   @Prop() emailLabel: string = '';
   @Prop() emailPlaceholder: string = "Your email address"
   @Prop() phoneLabel: string = '';
@@ -281,7 +281,7 @@ export class PasswordlessLink {
                 </slot>
               }
               <slot name='button'>
-                <button type="submit" class={this.btnCssClass} value="Submit" disabled={this.loading || !this.isFormValid}>{this.buttonLabel}</button>
+                <button type="submit" class={this.btnCssClass} value="Submit" disabled={this.loading || !this.isFormValid}>{this.startButtonLabel}</button>
               </slot>
             </form>
           }

@@ -28,7 +28,6 @@ export namespace Components {
     }
     interface PasswordlessLink {
         "btnCssClass": string;
-        "buttonLabel": string;
         "channel": string;
         "clientId": string;
         "emailLabel": string;
@@ -40,6 +39,7 @@ export namespace Components {
         "logout": () => Promise<void>;
         "phoneLabel": string;
         "phonePlaceholder": string;
+        "startButtonLabel": string;
         "tenantDomain": string;
     }
 }
@@ -82,7 +82,6 @@ declare namespace LocalJSX {
     }
     interface PasswordlessLink {
         "btnCssClass"?: string;
-        "buttonLabel"?: string;
         "channel"?: string;
         "clientId": string;
         "emailLabel"?: string;
@@ -92,6 +91,7 @@ declare namespace LocalJSX {
         "onAuthCompleted"?: (event: CustomEvent<boolean>) => void;
         "phoneLabel"?: string;
         "phonePlaceholder"?: string;
+        "startButtonLabel"?: string;
         "tenantDomain": string;
     }
     interface IntrinsicElements {
