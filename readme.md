@@ -7,7 +7,7 @@ Ready to use Axioms custom elements to quickly add authentication in your static
 ## As Script Tag
 Add following script tags in HTML header,
 
-```
+```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.2/dist/axioms-ui/axioms-ui.esm.js"></script>
 <script nomodule src="https://cdn.jsdelivr.net/npm/@axioms/axioms-ui@0.0.2/dist/axioms-ui/axioms-ui.js"></script>
 ```
@@ -15,20 +15,20 @@ Add following script tags in HTML header,
 ## As NPM Package
 Install NPM package,
 
-```
+```bash
 npm i @axioms/axioms-ui
 ```
 
 # Use
 An example of how to use the web component with html,
 
-```
+```html
 <passwordless-code channel="sms" tenant-domain="axioms.example.com" client-id="SWmAwjdKxGK3cDTBnCoBiFbDpbQKX6nW_JQUv5xgXma1Ta8WXFm88NvPr4tNQTvI" start-button-label="Get started now"  />
 ```
 
 Additionally you can hide or show content based on authentication.
 
-```
+```html
 <div style="display: none;" id="auth-content ">
     <p id="logged-in ">You are logged in.</p>
     <p id="logged-in-status "></p>
@@ -78,7 +78,7 @@ Additionally you can hide or show content based on authentication.
 # Styling
 Set value for css variables to style web components according to your requirements.
 
-```
+```html
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
     :root {
